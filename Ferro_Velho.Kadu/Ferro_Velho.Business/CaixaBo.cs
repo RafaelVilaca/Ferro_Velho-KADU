@@ -47,6 +47,16 @@ namespace Ferro_Velho.Business
             return repositorio.SemRemovidos();
         }
 
+        public void Baixar(int id)
+        {
+            repositorio.Baixar(id);
+        }
+
+        public IEnumerable<CaixaVo> SemBaixados()
+        {
+            return repositorio.SemBaixados();
+        }
+
         public IEnumerable<CaixaVo> ListarPorId(int idCliente, int? pagina)
         {
             int tamanhoPagina = 10;

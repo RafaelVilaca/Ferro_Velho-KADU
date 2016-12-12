@@ -248,6 +248,30 @@ namespace Ferro_Velho.Repositorio
             }
         }
 
+        public void Baixar(int id)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.Append("UPDATE Caixa SET Baixado = 1 Where ID = @ID ");
+            using (contexto = new Contexto())
+            {
+                List<SqlParameter> param = new List<SqlParameter>()
+                {
+                    new SqlParameter { ParameterName = "@ID", SqlDbType = SqlDbType.Int, Value = id }
+                };
+                contexto.ExecutaComando(sql.ToString(), param);
+            }
+        }
+
+        public IEnumerable<CaixaVo> SemBaixados()
+        {
+            using (contexto = new Contexto())
+            {
+                var strQuery = "SELECT * FROM Caixa Where Baixado = 0 order by ID_Cliente ";
+                var retorno = contexto.ExecutaComRetorno(strQuery, new List<SqlParameter>());
+                return ReaderObjeto(retorno);
+            }
+        }
+
         private List<CaixaVo> ReaderObjeto(SqlDataReader reader)
         {
             var caixa = new List<CaixaVo>();
@@ -274,7 +298,8 @@ namespace Ferro_Velho.Repositorio
                     Transacao = reader["Transacao"].ToString(),
                     Valor_Total = reader["ID_Material"].ToString(),
                     Pesagem = reader["ID_Material"].ToString(),
-                    Motivo_Exclusao = reader["Motivo_Exclusao"].ToString()
+                    Motivo_Exclusao = reader["Motivo_Exclusao"].ToString(),
+                    Baixado = bool.Parse(reader["Baixado"].ToString())
                 };
                 caixa.Add(temObjeto);
             }

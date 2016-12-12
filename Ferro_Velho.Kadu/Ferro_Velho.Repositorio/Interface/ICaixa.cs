@@ -11,5 +11,7 @@ namespace Ferro_Velho.Repositorio.Interface
     {
         IEnumerable<CaixaVo> ListarTodos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente);
         IEnumerable<CaixaVo> ListarPorId(int idCliente);
+        IEnumerable<CaixaVo> SemBaixados();
+        void Baixar(int id);
     }
 }

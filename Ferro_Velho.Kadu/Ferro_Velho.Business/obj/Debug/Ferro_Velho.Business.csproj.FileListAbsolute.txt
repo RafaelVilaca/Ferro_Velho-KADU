@@ -32,3 +32,16 @@ C:\Users\ferev\Desktop\Cursos\2.Programa_Kadu\Ferro_Velho.Kadu\Ferro_Velho.Busin
 C:\Users\ferev\Desktop\Cursos\2.Programa_Kadu\Ferro_Velho.Kadu\Ferro_Velho.Business\obj\Debug\Ferro_Velho.Business.csprojResolveAssemblyReference.cache
 C:\Users\ferev\Desktop\Cursos\2.Programa_Kadu\Ferro_Velho.Kadu\Ferro_Velho.Business\obj\Debug\Ferro_Velho.Business.dll
 C:\Users\ferev\Desktop\Cursos\2.Programa_Kadu\Ferro_Velho.Kadu\Ferro_Velho.Business\obj\Debug\Ferro_Velho.Business.pdb
+C:\Users\ferev\Source\Repos\Ferro_Velho-KADU\Ferro_Velho.Kadu\Ferro_Velho.Business\bin\Debug\Ferro_Velho.Business.dll
+C:\Users\ferev\Source\Repos\Ferro_Velho-KADU\Ferro_Velho.Kadu\Ferro_Velho.Business\bin\Debug\Ferro_Velho.Business.pdb
+C:\Users\ferev\Source\Repos\Ferro_Velho-KADU\Ferro_Velho.Kadu\Ferro_Velho.Business\bin\Debug\Ferro_Velho.Entidades.dll
+C:\Users\ferev\Source\Repos\Ferro_Velho-KADU\Ferro_Velho.Kadu\Ferro_Velho.Business\bin\Debug\Ferro_Velho.Repositorio.dll
+C:\Users\ferev\Source\Repos\Ferro_Velho-KADU\Ferro_Velho.Kadu\Ferro_Velho.Business\bin\Debug\PagedList.dll
+C:\Users\ferev\Source\Repos\Ferro_Velho-KADU\Ferro_Velho.Kadu\Ferro_Velho.Business\bin\Debug\PagedList.Mvc.dll
+C:\Users\ferev\Source\Repos\Ferro_Velho-KADU\Ferro_Velho.Kadu\Ferro_Velho.Business\bin\Debug\Ferro_Velho.Entidades.pdb
+C:\Users\ferev\Source\Repos\Ferro_Velho-KADU\Ferro_Velho.Kadu\Ferro_Velho.Business\bin\Debug\Ferro_Velho.Repositorio.pdb
+C:\Users\ferev\Source\Repos\Ferro_Velho-KADU\Ferro_Velho.Kadu\Ferro_Velho.Business\bin\Debug\PagedList.xml
+C:\Users\ferev\Source\Repos\Ferro_Velho-KADU\Ferro_Velho.Kadu\Ferro_Velho.Business\bin\Debug\PagedList.Mvc.xml
+C:\Users\ferev\Source\Repos\Ferro_Velho-KADU\Ferro_Velho.Kadu\Ferro_Velho.Business\obj\Debug\Ferro_Velho.Business.csprojResolveAssemblyReference.cache
+C:\Users\ferev\Source\Repos\Ferro_Velho-KADU\Ferro_Velho.Kadu\Ferro_Velho.Business\obj\Debug\Ferro_Velho.Business.dll
+C:\Users\ferev\Source\Repos\Ferro_Velho-KADU\Ferro_Velho.Kadu\Ferro_Velho.Business\obj\Debug\Ferro_Velho.Business.pdb

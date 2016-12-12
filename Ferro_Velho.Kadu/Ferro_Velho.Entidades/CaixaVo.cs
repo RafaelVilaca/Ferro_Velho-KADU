@@ -15,6 +15,7 @@ namespace Ferro_Velho.Entidades
         public DateTime Data_Transacao { get; set; }
         public virtual ClienteVo Cliente { get; set; }
         public string Motivo_Exclusao { get; set; }
+        public bool Baixado { get; set; }
         public CaixaVo()
         {
             this.Cliente = new ClienteVo();

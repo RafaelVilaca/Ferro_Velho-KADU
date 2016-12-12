@@ -1,1 +1,64 @@
-﻿
+﻿@model  PagedList.IPagedList<Ferro_Velho.Entidades.CaixaVo>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Caixa";
+    Layout = "~/Views/Shared/Caixa.cshtml";
+
+    var mensagem = TempData["mensagem"] != null ? TempData["mensagem"].ToString() : "";
+}
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<h4>Lista de Atendimentos</h4>
+
+@using (Html.BeginForm("Caixa", "Caixa", FormMethod.Get, new { @class = "well" }))
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-condensed table-striped table-hover" border="1">
+            <thead>
+                <tr>
+                    <th>Descrição Material</th>
+                    <th>Transação</th>
+                    <th>Peso</th>
+                    <th>Data Transação</th>
+                    <th>Valor Total</th>
+                    <th>Motivo Exclusão</th>
+                    <th>Dar Baixa</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var atendimento in Model)
+                {
+                    <tr>
+                        <td>@atendimento.Material.Descricao</td>
+                        <td>@atendimento.Transacao</td>
+                        <td>@atendimento.Pesagem</td>
+                        <td>@atendimento.Data_Transacao</td>
+                        <td>@atendimento.Valor_Total</td>
+                        <td>@atendimento.Motivo_Exclusao</td>
+                        <span class="glyphicon glyphicon-ok-sign"></span>
+                        @Html.ActionLink("Baixar", "Baixar", new { id = @atendimento.ID_Caixa }, new { onclick = "javascript: return confirm('Deseja realmente Baixar esta Ordem?')" })
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+<br />
+
+Página @Model.PageNumber de @Model.PageCount
+
+@Html.PagedListPager(Model, Page => Url.Action("Caixa", new { pagina = Page }))
+
+<script>
+    $(document).ready(function () {
+
+       var msg = '@(!string.IsNullOrEmpty(mensagem)?mensagem:"")';
+
+        if (msg != '') {
+            alert(msg);
+        }
+
+    });
+</script>

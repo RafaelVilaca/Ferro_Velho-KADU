@@ -45,6 +45,16 @@ namespace Ferro_Velho.Web.Controllers
             }
         }
 
+        public ActionResult Baixar(int id)
+        {
+            CaixaVo caixa = new CaixaVo();
+            caixa.ID_Cliente = id;
+
+            caixaBo.Baixar(id);
+
+            return RedirectToAction("Caixa");
+        }
+
         public ActionResult Excluir(int id)
         {
             CaixaVo caixa = new CaixaVo();

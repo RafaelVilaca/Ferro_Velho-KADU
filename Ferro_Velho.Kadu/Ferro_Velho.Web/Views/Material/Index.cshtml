@@ -1,0 +1,99 @@
+﻿@model  PagedList.IPagedList<Ferro_Velho.Entidades.MateriaisVo>
+@using PagedList.Mvc
+
+@*@model  IEnumerable<Ferro_Velho.Entidades.MateriaisVo>*@
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var mensagem = TempData["mensagem"] != null ? TempData["mensagem"].ToString() : "";
+}
+
+<p></p>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <p style="text-align:center"><a class="btn btn-group-justified btn-lg btn-primary" href="/Home/Index" style="padding-top:10px; padding-bottom:10px; font-size:x-large;">Página Inicial &raquo;</a></p>
+    </div>
+</div>
+<p></p>
+
+<h2>Lista de Materiais</h2>
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@using (Html.BeginForm("Index", "Material", FormMethod.Get, new { @class = "well" }))
+{
+    <div class="row">
+        <div class="form-group col-xs-10 col-sm-10 col-md-10 col-lg-10">
+            <label class="control-label" for="txtMaterial">Material</label>
+            @Html.TextBox("descricao", "", new { id = "txtMaterial", @class = "form-control", @maxlength = "100" })
+        </div>
+    </div>
+
+    <input type="submit" value="Pesquisar" class="btn btn-primary" />
+
+    @Html.ActionLink("Novo Material", "Cadastro", null, new { @class = "btn btn-success" })
+}
+
+<div class="table-responsive">
+    <table class="table table-bordered table-condensed table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Descrição Material</th>
+                <th width="150px">Peso</th>
+                <th width="100px">Ativo?</th>
+                <th width="150px">Valor KG</th>
+                <th width="150px">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var material in Model)
+            {
+                <tr @(material.Ativo == false ? "style=color:#f00" : "")>
+                    <td>@material.Descricao</td>
+                    <td width="150px">@material.Qtde_Peso</td>
+                    @if (@material.Ativo)
+                    {
+                        <td width="100px">Sim</td>
+                    }
+                    else
+                    {
+                        <td width="100px">Não</td>
+                    }
+                    <td width="150px">@material.Valor</td>
+                    <td width="150px">
+                        <span class="glyphicon glyphicon-edit"></span>
+                        @Html.ActionLink("Editar", "Cadastro", new { id = @material.ID_Material })
+                        @if (@material.Ativo == false)
+                        {
+                            <span class="glyphicon glyphicon-ok-sign"></span>
+                            @Html.ActionLink("Ativar", "DisExcluir", new { id = @material.ID_Material }, new { onclick = "javascript: return confirm('Deseja realmente Ativar este Material?')" })
+                        }
+                        else
+                        {
+                            <span class="glyphicon glyphicon-remove-sign"></span>
+                            @Html.ActionLink("Desativar", "Excluir", new { id = @material.ID_Material }, new { onclick = "javascript: return confirm('Deseja realmente Desativar este Material?')" })
+                        }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+
+@*Página @Model.PageNumber de @Model.PageCount*@
+
+@Html.PagedListPager(Model, Page => Url.Action("Index", new { pagina = Page }))
+
+<script>
+    $(document).ready(function () {
+
+        var msg = '@(!string.IsNullOrEmpty(mensagem)?mensagem:"")';
+
+        if (msg != '') {
+            alert(msg);
+        }
+    });
+</script>

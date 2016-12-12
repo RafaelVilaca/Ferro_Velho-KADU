@@ -1,0 +1,122 @@
+﻿@model  PagedList.IPagedList<Ferro_Velho.Entidades.ClienteVo>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var mensagem = TempData["mensagem"] != null ? TempData["mensagem"].ToString() : "";
+}
+
+<p></p>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <p style="text-align:center"><a class="btn btn-group-justified btn-lg btn-primary" href="/Home/Index" style="padding-top:10px; padding-bottom:10px; font-size:x-large;">Página Inicial &raquo;</a></p>
+    </div>
+</div>
+<p></p>
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<h3>Lista de Clientes</h3>
+
+@using (Html.BeginForm("Index", "Cliente", FormMethod.Get, new { @class = "well" }))
+{
+    <div class="row">
+        <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <label class="control-label" for="txtNomeCliente">Nome</label>
+            @Html.TextBox("nome", "", new { id = "txtNomeCliente", @class = "form-control", @maxlength = "50" })
+        </div>
+    </div>
+
+    <input type="submit" value="Pesquisar" class="btn btn-primary" />
+
+    @Html.ActionLink("Novo Cliente", "Cadastro", null, new { @class = "btn btn-success" })
+}
+
+<div class="table-responsive">
+    <table class="table table-bordered table-condensed table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Nome Cliente</th>
+                <th>Email</th>
+                <th>Data Cadastro</th>
+                <th>Tipo Cliente</th>
+                <th>Endereço</th>
+                <th>Numero</th>
+                <th>Complemento</th>
+                <th>Bairro</th>
+                <th>Cidade</th>
+                <th>Estado</th>
+                <th>Ativo?</th>
+                <th width="100">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cliente in Model)
+            {
+                <tr @(cliente.Ativo == false ? "style=color:#f00" : "")>
+                    <td>@cliente.Nome</td>
+                    <td>@cliente.Email</td>
+                    <td>@cliente.Data_Cadastro</td>
+                    @if (@cliente.Tipo_Cliente == "F")
+                    {
+                        <td>Física</td>
+                    }
+                    else
+                    {
+                        <td>Jurídica</td>
+                    }
+                    <td>@cliente.Endereco</td>
+                    <td>@cliente.Numero</td>
+                    <td>@cliente.Complemento</td>
+                    <td>@cliente.Bairro</td>
+                    <td>@cliente.Cidade</td>
+                    <td>@cliente.Estado</td>
+                    @if (@cliente.Ativo)
+                    {
+                        <td>Sim</td>
+                    }
+                    else
+                    {
+                        <td>Não</td>
+                    }
+                    <td>
+                        <span class="glyphicon glyphicon-edit"></span>
+                        @Html.ActionLink("Editar", "Cadastro", new { id = @cliente.ID_Cliente })
+                        <br />
+                        @if (@cliente.Ativo == false)
+                        {
+                            <span class="glyphicon glyphicon-ok-sign"></span>
+                            @Html.ActionLink("Ativar", "DisExcluir", new { id = @cliente.ID_Cliente }, new { onclick = "javascript: return confirm('Deseja realmente Ativar esta Pessoa?')" })
+                        }
+                        else
+                        {
+                            <span class="glyphicon glyphicon-remove-sign"></span>
+                            @Html.ActionLink("Desativar", "Excluir", new { id = @cliente.ID_Cliente }, new { onclick = "javascript: return confirm('Deseja realmente Desativar esta Pessoa?')" })
+                        }
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+
+Página @Model.PageNumber de @Model.PageCount
+
+@Html.PagedListPager(Model, Page => Url.Action("Index", new { pagina = Page }))
+
+<script>
+    $(document).ready(function () {
+
+       var msg = '@(!string.IsNullOrEmpty(mensagem)?mensagem:"")';
+
+        if (msg != '') {
+            alert(msg);
+        }
+
+    });
+</script>

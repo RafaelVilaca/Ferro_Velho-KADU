@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Ferro_Velho.Entidades.CaixaVo>
+@*@model  PagedList.IPagedList<Ferro_Velho.Entidades.CaixaVo>
+@using PagedList.Mvc*@
+@*<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />*@
+
+<h4>Lista de Atendimentos</h4>
+
+@using (Html.BeginForm("_Lista", "Caixa", FormMethod.Get, new { @class = "well" }))
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-condensed table-striped table-hover" border="1">
+            <thead>
+                <tr>
+                    <th>Descrição Material</th>
+                    <th>Transação</th>
+                    <th>Peso</th>
+                    <th>Data Transação</th>
+                    <th>Valor Total</th>
+                    <th>Motivo Exclusão</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var atendimento in Model)
+                {
+                    <tr>
+                        <td>@atendimento.Material.Descricao</td>
+                        <td>@atendimento.Transacao</td>
+                        <td>@atendimento.Pesagem</td>
+                        <td>@atendimento.Data_Transacao</td>
+                        <td>@atendimento.Valor_Total</td>
+                        <td>@atendimento.Motivo_Exclusao</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+<br />
+
+    @*Página @Model.PageNumber de @Model.PageCount*@
+
+    @*@Html.PagedListPager(Model, Page => Url.Action("Cadastro/_Lista", new { pagina = Page }))*@

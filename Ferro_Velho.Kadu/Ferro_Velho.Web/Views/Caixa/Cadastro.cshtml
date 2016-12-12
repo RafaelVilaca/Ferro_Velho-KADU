@@ -1,0 +1,164 @@
+﻿@using Ferro_Velho.Business;
+@using Ferro_Velho.Entidades;
+@model CaixaVo
+
+@{
+    ViewBag.Title = "Cadastro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    IEnumerable<CaixaVo> atendimentos = ViewBag.Atendimentos;
+
+    var mensagem = TempData["mensagem"] != null ? TempData["mensagem"].ToString() : "";
+
+    IEnumerable<ClienteVo> clientes = null;
+
+    IEnumerable<MateriaisVo> materiais = null;
+
+    if (Model == null)
+    {
+        clientes = ClienteConstrutor.clienteBo().SemRemovidos();
+        materiais = MaterialConstrutor.materialBo().SemRemovidos();
+    }
+    else
+    {
+        clientes = ClienteConstrutor.clienteBo().ListarTodos(null);
+        materiais = MaterialConstrutor.materialBo().ListarTodos(null);
+    }
+
+    var listaClientes = new SelectList
+        (
+            clientes,
+            "ID_Cliente",
+            "Nome"
+        );
+
+    var listaMateriais = new SelectList
+        (
+            materiais,
+            "ID_Material",
+            "Descricao"
+        );
+
+
+    SelectList listaOperacao = new SelectList(new[]
+    {
+       new { Valor = "Devolução", Texto = "Devolução"}, new { Valor = "Venda", Texto = "Venda"},
+       new { Valor = "Entrada", Texto = "Entrada"}, new { Valor = "Saida", Texto = "Saida"}
+    }, "Valor", "Texto");
+}
+
+<h3>Cadastro de Transação</h3>
+@using (Html.BeginForm("Cadastrar", "Caixa", FormMethod.Post, new { @class = "well" }))
+{
+    @Html.HiddenFor(x => x.ID_Caixa, new { id = "hdfID_Caixa" })
+    <div class="row">
+        <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <label class="control-label" for="ddlCliente">Cliente</label>
+            @if (Model == null)
+            {
+                @Html.DropDownListFor(x => x.ID_Cliente, listaClientes, "Selecione", new
+           {
+               id = "ddlCliente",
+               @class = "form-control",
+               @onchange = "buscarAtendimento(this.id)"
+           })
+            }
+            else
+            {
+                @Html.DropDownListFor(x => x.ID_Cliente, listaClientes, new
+           {
+               id = "ddlCliente",
+               @class = "form-control",
+               @readonly = true
+           })
+            }
+        </div>
+        <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <label class="control-label" for="ddlMaterial">Material</label>
+            @if (Model == null)
+            {
+                @Html.DropDownListFor(x => x.ID_Material, listaMateriais, "Selecione", new
+           {
+               id = "ddlMaterial",
+               @class = "form-control"
+           })
+            }
+            else
+            {
+                @Html.DropDownListFor(x => x.ID_Material, listaMateriais, new
+           {
+               id = "ddlMaterial",
+               @class = "form-control",
+               @readonly = true
+           })
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <label class="control-label" for="txtData">Data Operação</label>
+
+            @if (Model == null)
+            {
+                @Html.TextBoxFor(x => x.Data_Transacao, new { @Value = @DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")/*.ToShortDateString()*/, @class = "form-control", @readonly = true })
+            }
+            else
+            {
+                @Html.TextBoxFor(x => x.Data_Transacao, new { @class = "form-control", @readonly = true })
+            }
+        </div>
+
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <label class="control-label" for="ddlOperacao">Operação</label>
+            @Html.DropDownListFor(x => x.Transacao, listaOperacao, "Selecione...", new { id = "ddlOperacao", @class = "form-control" })
+        </div>
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <label class="control-label" for="txtPesagem">Pesagem</label>
+            @Html.TextBoxFor(x => x.Pesagem, new { id = "txtPesagem", @class = "form-control peso", @maxlength = "15" })
+        </div>
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <label class="control-label" for="txtValor">Valor Total</label>
+            @Html.TextBoxFor(x => x.Valor_Total, new { id = "txtValor", @class = "form-control money", @maxlength = "15" })
+        </div>
+        <div class="form-group col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <label class="control-label" for="txtMotivo">Motivo</label>
+            @Html.TextBoxFor(x => x.Motivo_Exclusao, new { id = "txtMotivo", @class = "form-control", @maxlength = "15" })
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Salvar</button>
+    <button type="reset" class="btn btn-danger">Limpar Dados</button>
+    @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-warning" })
+
+    <br />
+    <div id="lista_atendimentos">
+        @Html.Partial("_Lista", atendimentos)
+    </div>
+
+}
+
+<script>
+    $(document).ready(function () {
+
+        var msg = '@(!string.IsNullOrEmpty(mensagem)?mensagem:"")';
+
+        if (msg != '') {
+            alert(msg);
+        }
+
+    });
+
+    $("#ddlCliente").change(function () {
+
+        $.ajax({
+            url: "/Caixa/GetAtendimentosByCliente?Id=" + $(this).val(),
+            type: "get",
+            success: function (response) {
+                $("#lista_atendimentos").html(response);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            }
+        });
+    });
+</script>

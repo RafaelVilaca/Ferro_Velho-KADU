@@ -1,0 +1,36 @@
+Create Table Clientes(
+ID_Cliente int identity primary key,
+Nome varchar(50),
+Email varchar(100),
+Endereco varchar(50),
+Numero varchar(10),
+Complemento varchar(15),
+Bairro varchar(30),
+Cidade varchar(30),
+Estado char(2),
+Tipo_Cliente char(1),
+Ativo bit
+);
+
+Create Table Telefones(
+ID_Telefone int identity primary key,
+Tipo_Telefone varchar(15),
+Telefone varchar(15),
+ID_Cliente int
+);
+
+Create Table Caixa(
+ID int identity primary key,
+ID_Material int,
+Transacao varchar(10),
+Pesagem decimal(15,2),
+Valor_Total money,
+Data_Transacao DateTime,
+ID_Cliente int
+);
+
+Create Table Material(
+ID_Material int identity primary key,
+Descricao varchar(100),
+Valor money
+);

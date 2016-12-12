@@ -1,0 +1,82 @@
+﻿@model  PagedList.IPagedList<Ferro_Velho.Entidades.TelefoneVo>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var mensagem = TempData["mensagem"] != null ? TempData["mensagem"].ToString() : "";
+}
+
+<p></p>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <p style="text-align:center"><a class="btn btn-group-justified btn-lg btn-primary" href="/Home/Index" style="padding-top:10px; padding-bottom:10px; font-size:x-large;">Página Inicial &raquo;</a></p>
+    </div>
+</div>
+<p></p>
+
+<h2>Lista de Telefones</h2>
+
+@*<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />*@
+
+@using (Html.BeginForm("Index", "Telefone", FormMethod.Get, new { @class = "well" }))
+{
+    <div class="row">
+        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <label class="control-label" for="txtNomeCliente">Nome Cliente</label>
+            @Html.TextBox("nome", "", new { id = "txtNomeCliente", @class = "form-control", @maxlength = "50" })
+        </div>
+    </div>
+
+    <input type="submit" value="Pesquisar" class="btn btn-primary" />
+
+    @Html.ActionLink("Novo Telefone", "Cadastro", null, new { @class = "btn btn-success" })
+}
+
+
+<div class="table-responsive">
+    <table class="table table-bordered table-condensed table-striped table-hover">
+        <thead>
+            <tr>
+                <th width="500">Nome Cliente</th>
+                <th>Telefone</th>
+                <th>Tipo Telefone</th>
+                <th width="200">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var telefone in Model)
+            {
+                <tr>
+                    <td width="500">@telefone.Cliente.Nome</td>
+                    <td>@telefone.Telefone</td>
+                    <td>@telefone.Tipo_Telefone</td>
+                    <td width="200">
+                        @*<span class="glyphicon glyphicon-edit"></span>
+                        @Html.ActionLink("Editar", "Cadastro", new { id = @telefone.ID_Telefone })*@
+                        <span class="glyphicon glyphicon-remove"></span>
+                        @Html.ActionLink("Excluir", "Excluir", new { id = @telefone.ID_Telefone }, new { onclick = "javascript: return confirm('Deseja realmente excluir este Atendimento?')" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <br />
+
+    @*Página @Model.PageNumber de @Model.PageCount*@
+
+    @Html.PagedListPager(Model, Page => Url.Action("Index", new { pagina = Page }))
+
+</div>
+<script>
+    $(document).ready(function () {
+
+        var msg = '@(!string.IsNullOrEmpty(mensagem)?mensagem:"")';
+
+        if (msg != '') {
+            alert(msg);
+        }
+    });
+</script>

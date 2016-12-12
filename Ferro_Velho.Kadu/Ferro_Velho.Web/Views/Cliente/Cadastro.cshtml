@@ -1,0 +1,116 @@
+﻿@model Ferro_Velho.Entidades.ClienteVo
+
+@{
+    ViewBag.Title = "Cadastro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var mensagem = TempData["mensagem"] != null ? TempData["mensagem"].ToString() : "";
+
+    SelectList listaEstado = new SelectList(new[]
+    {
+        new { Valor = "AC", Texto = "ACRE"}, new { Valor = "AL", Texto = "ALAGOAS"},
+        new { Valor = "AP", Texto = "AMAPÁ"}, new { Valor = "AM", Texto = "AMAZONAS"},
+        new { Valor = "BA", Texto = "BAHIA"}, new { Valor = "CE", Texto = "CEARÁ"},
+        new { Valor = "DF", Texto = "DISTRITO FEDERAL"}, new { Valor = "ES", Texto = "ESPÍRITO SANTO"},
+        new { Valor = "GO", Texto = "GOIÁS"}, new { Valor = "MA", Texto = "MARANHÃO"},
+        new { Valor = "MT", Texto = "MATO GROSSO"}, new { Valor = "MS", Texto = "MATO GROSSO DO SUL"},
+        new { Valor = "MG", Texto = "MINAS GERAIS"}, new { Valor = "PA", Texto = "PARÁ"},
+        new { Valor = "PB", Texto = "PARAÍBA"}, new { Valor = "PR", Texto = "PARANÁ"},
+        new { Valor = "PE", Texto = "PERNAMBUCO"}, new { Valor = "PI", Texto = "PIAUÍ"},
+        new { Valor = "RJ", Texto = "RIO DE JANEIRO"}, new { Valor = "RN", Texto = "RIO GRANDE DO NORTE"},
+        new { Valor = "RS", Texto = "RIO GRANDE DO SUL"}, new { Valor = "RO", Texto = "RONDÔNIA"},
+        new { Valor = "RR", Texto = "RORAIMA"}, new { Valor = "SC", Texto = "SANTA CATARINA"},
+        new { Valor = "SP", Texto = "SÃO PAULO"}, new { Valor = "SE", Texto = "SERGIPE"},
+        new { Valor = "TO", Texto = "TOCANTINS"} }, "Valor", "Texto");
+
+    SelectList listaTipoPessoa = new SelectList(new[]
+    {
+            new { Valor = "F", Texto = "Física" },
+            new { Valor = "J", Texto = "Jurídica" } }, "Valor", "Texto");
+
+    SelectList listaAtivo = new SelectList(new[]
+    {
+            new { Valor = true, Texto = "Sim" },
+            new { Valor = false, Texto = "Não" } }, "Valor", "Texto");
+}
+
+<h3>Cadastro de Cliente</h3>
+
+@using (Html.BeginForm("Cadastrar", "Cliente", FormMethod.Post, new { @class = "well" }))
+{
+    @Html.HiddenFor(x => x.ID_Cliente, new { id = "hdfID_Cliente" })
+    <div class="row">
+        <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <label class="control-label" for="txtNome">Nome Cliente</label>
+            @Html.TextBoxFor(x => x.Nome, new { id = "txtNome", @class = "form-control", @maxlength = "50" })
+        </div>
+        <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <label class="control-label" for="txtEmail">Email</label>
+            @Html.TextBoxFor(x => x.Email, new { id = "txtEmail", @class = "form-control", @maxlength = "100" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <label class="control-label" for="txtData">Data Cadastro</label>
+            @if (Model == null)
+            {
+                @Html.TextBoxFor(x => x.Data_Cadastro, new { @Value = @DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), @class = "form-control", @readonly = true })
+            }
+            else
+            {
+                @Html.TextBoxFor(x => x.Data_Cadastro, new { @class = "form-control", @readonly = true })
+            }
+        </div>
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <label class="control-label" for="ddlTipo_Cliente">Tipo Cliente</label>
+            @Html.DropDownListFor(x => x.Tipo_Cliente, listaTipoPessoa, "Selecione...", new { id = "ddlTipo_Cliente", @class = "form-control" })
+        </div>
+        <div class="form-group col-xs-5 col-sm-5 col-md-5 col-lg-5">
+            <label class="control-label" for="txtEndereco">Endereço</label>
+            @Html.TextBoxFor(x => x.Endereco, new { id = "txtEndereco", @class = "form-control", @maxlength = "50" })
+        </div>
+        <div class="form-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="control-label" for="txtCidade">Cidade Residente</label>
+            @Html.TextBoxFor(x => x.Cidade, new { id = "txtCidade", @class = "form-control", @maxlength = "30" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <label class="control-label" for="txtNumero">Numero</label>
+            @Html.TextBoxFor(x => x.Numero, new { id = "txtNumero", @class = "form-control int", @maxlength = "10" })
+        </div>
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <label class="control-label" for="txtNumero">Complemento</label>
+            @Html.TextBoxFor(x => x.Complemento, new { id = "txtComplemento", @class = "form-control", @maxlength = "15" })
+        </div>
+        <div class="form-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="control-label" for="txtBairro">Bairro</label>
+            @Html.TextBoxFor(x => x.Bairro, new { id = "txtBairro", @class = "form-control", @maxlength = "30" })
+        </div>
+        <div class="form-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="control-label" for="ddlEstado">Estado</label>
+            @Html.DropDownListFor(x => x.Estado, listaEstado, "Selecione...", new { id = "ddlEstado", @class = "form-control" })
+        </div>
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <label class="control-label" for="ddlAtivo">Ativo?</label>
+            @Html.DropDownListFor(x => x.Ativo, listaAtivo, new { id = "ddlAtivo", @class = "form-control" })
+            @*<label class="checkbox-inline">@Html.CheckBoxFor(x => x.Ativo, new { id = "chkAtivo" })Cliente Ativo?</label>*@
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Salvar</button>
+    <button type="reset" class="btn btn-danger">Limpar Dados</button>
+        @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-warning" })
+}
+
+<script>
+    $(document).ready(function () {
+
+        var msg = '@(!string.IsNullOrEmpty(mensagem)?mensagem:"")';
+
+        if (msg != '') {
+            alert(msg);
+        }
+
+    });
+</script>

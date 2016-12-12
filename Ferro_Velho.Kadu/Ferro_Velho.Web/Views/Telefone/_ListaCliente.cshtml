@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Ferro_Velho.Entidades.TelefoneVo>
+@*@model  PagedList.IPagedList<Ferro_Velho.Entidades.TelefoneVo>
+@using PagedList.Mvc*@
+@*<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />*@
+
+<h4>Lista de Telefones</h4>
+
+@using (Html.BeginForm("_ListaCliente", "Telefone", FormMethod.Get, new { @class = "well" }))
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-condensed table-striped table-hover" border="1">
+            <thead>
+                <tr>
+                    <th>Telefone</th>
+                    <th>Tipo Telefone</th>
+                    <th width="200">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var telefone in Model)
+                {
+                    <tr>
+                        <td>@telefone.Telefone</td>
+                        <td>@telefone.Tipo_Telefone</td>
+                        <td width="200">
+                            @*<span class="glyphicon glyphicon-edit"></span>
+                            @Html.ActionLink("Editar", "Cadastro", new { id = @telefone.ID_Telefone })*@
+                            <span class="glyphicon glyphicon-remove"></span>
+                            @Html.ActionLink("Excluir", "Excluir", new { id = @telefone.ID_Telefone }, new { onclick = "javascript: return confirm('Deseja realmente excluir este Telefone?')" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+<br />
+
+    @*Página @Model.PageNumber de @Model.PageCount*@
+
+    @*@Html.PagedListPager(Model, Page => Url.Action("_ListaCliente.cshtml", new { pagina = Page }))*@

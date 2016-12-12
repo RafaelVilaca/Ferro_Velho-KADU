@@ -1,0 +1,13 @@
+C:\Users\ferev\Desktop\Cursos\1.João\Ferro_Velho.Kadu\Ferro_Velho.Entidades\bin\Debug\Ferro_Velho.Entidades.dll
+C:\Users\ferev\Desktop\Cursos\1.João\Ferro_Velho.Kadu\Ferro_Velho.Entidades\bin\Debug\Ferro_Velho.Entidades.pdb
+C:\Users\ferev\Desktop\Cursos\1.João\Ferro_Velho.Kadu\Ferro_Velho.Entidades\obj\Debug\Ferro_Velho.Entidades.dll
+C:\Users\ferev\Desktop\Cursos\1.João\Ferro_Velho.Kadu\Ferro_Velho.Entidades\obj\Debug\Ferro_Velho.Entidades.pdb
+C:\Users\ferev\Desktop\Cursos\1.João\Ferro_Velho.Kadu\Ferro_Velho.Entidades\obj\Debug\Ferro_Velho.Entidades.csprojResolveAssemblyReference.cache
+C:\Users\ferev\Desktop\Cursos\1.João\Ferro_Velho.Kadu\Ferro_Velho.Entidades\bin\Debug\PagedList.dll
+C:\Users\ferev\Desktop\Cursos\1.João\Ferro_Velho.Kadu\Ferro_Velho.Entidades\bin\Debug\PagedList.xml
+C:\Users\ferev\Desktop\Cursos\2.Programa_Kadu\Ferro_Velho.Kadu\Ferro_Velho.Entidades\bin\Debug\Ferro_Velho.Entidades.dll
+C:\Users\ferev\Desktop\Cursos\2.Programa_Kadu\Ferro_Velho.Kadu\Ferro_Velho.Entidades\bin\Debug\Ferro_Velho.Entidades.pdb
+C:\Users\ferev\Desktop\Cursos\2.Programa_Kadu\Ferro_Velho.Kadu\Ferro_Velho.Entidades\bin\Debug\PagedList.dll
+C:\Users\ferev\Desktop\Cursos\2.Programa_Kadu\Ferro_Velho.Kadu\Ferro_Velho.Entidades\bin\Debug\PagedList.xml
+C:\Users\ferev\Desktop\Cursos\2.Programa_Kadu\Ferro_Velho.Kadu\Ferro_Velho.Entidades\obj\Debug\Ferro_Velho.Entidades.dll
+C:\Users\ferev\Desktop\Cursos\2.Programa_Kadu\Ferro_Velho.Kadu\Ferro_Velho.Entidades\obj\Debug\Ferro_Velho.Entidades.pdb

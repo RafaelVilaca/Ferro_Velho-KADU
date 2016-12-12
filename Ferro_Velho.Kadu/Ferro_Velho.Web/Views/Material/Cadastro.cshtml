@@ -1,0 +1,55 @@
+﻿@model Ferro_Velho.Entidades.MateriaisVo
+
+@{
+    ViewBag.Title = "Cadastro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var mensagem = TempData["mensagem"] != null ? TempData["mensagem"].ToString() : "";
+
+    SelectList listaAtivo = new SelectList(new[]
+    {
+            new { Valor = true, Texto = "Sim" },
+            new { Valor = false, Texto = "Não" } }, "Valor", "Texto");
+}
+
+<h2>Cadastro de Materiais</h2>
+
+@using (Html.BeginForm("Cadastrar", "Material", FormMethod.Post, new { @class = "well" }))
+{
+    @Html.HiddenFor(x => x.ID_Material, new { id = "hdfID_Material" })
+    <div class="row">
+        <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <label class="control-label" for="txtDescricao">Material</label>
+            @Html.TextBoxFor(x => x.Descricao, new { id = "txtDescricao", @class = "form-control", @maxlength = "100" })
+        </div>
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <label class="control-label" for="txtPeso">Peso Material</label>
+            @Html.TextBoxFor(x => x.Qtde_Peso, new { id = "txtPeso", @class = "form-control peso", @maxlength = "15" })
+        </div>
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <label class="control-label" for="txtValor">Valor KG</label>
+            @Html.TextBoxFor(x => x.Valor, new { id = "txtValor", @class = "form-control money", @maxlength = "15" })
+        </div>
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <label class="control-label" for="ddlAtivo">Ativo?</label>
+            @Html.DropDownListFor(x => x.Ativo, listaAtivo, new { id = "ddlAtivo", @class = "form-control" })
+            @*<label class="checkbox-inline">@Html.CheckBoxFor(x => x.Ativo, new { id = "chkAtivo" })Cliente Ativo?</label>*@
+        </div>
+    </div>
+  
+    <button type="submit" class="btn btn-success">Salvar</button>
+    <button type="reset" class="btn btn-danger">Limpar Dados</button>
+    @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-warning" })
+}
+
+<script>
+    $(document).ready(function () {
+
+        var msg = '@(!string.IsNullOrEmpty(mensagem)?mensagem:"")';
+
+        if (msg != '') {
+            alert(msg);
+        }
+
+    });
+</script>

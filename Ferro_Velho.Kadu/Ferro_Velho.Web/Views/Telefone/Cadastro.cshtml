@@ -1,0 +1,110 @@
+﻿@using Ferro_Velho.Business;
+@using Ferro_Velho.Entidades;
+@model TelefoneVo
+@{
+    ViewBag.Title = "Cadastro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var mensagem = TempData["mensagem"] != null ? TempData["mensagem"].ToString() : "";
+
+    IEnumerable<TelefoneVo> telefones = ViewBag.Telefones;
+
+    IEnumerable<ClienteVo> clientes = null;
+
+    if (Model == null)
+    {
+        clientes = ClienteConstrutor.clienteBo().SemRemovidos();
+    }
+    else
+    {
+        clientes = ClienteConstrutor.clienteBo().ListarTodos(null);
+    }
+
+    var listaClientes = new SelectList
+        (
+            clientes,
+            "ID_Cliente",
+            "Nome"
+        );
+
+    SelectList listaTipo = new SelectList(new[]
+    {
+        new { Valor = "Particular", Texto = "Particular"}, new { Valor = "Trabalho", Texto = "Trabalho"},
+        new { Valor = "Residencial", Texto = "Residencial"}, new { Valor = "Recado", Texto = "Recado"}
+    }, "Valor", "Texto");
+}
+
+<h2>Cadastro de Telefone</h2>
+@using (Html.BeginForm("Cadastrar", "Telefone", FormMethod.Post, new { @class = "well" }))
+{
+    @Html.HiddenFor(x => x.ID_Telefone, new { id = "hdfID_Telefone" })
+    <div class="row">
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <label class="control-label" for="ddlTipo">Tipo Telefone</label>
+            @Html.DropDownListFor(x => x.Tipo_Telefone, listaTipo, "Selecione...", new { id = "ddlTipo", @class = "form-control" })
+        </div>
+        <div class="form-group col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <label class="control-label" for="ddlCliente">Cliente</label>
+            @if (Model == null)
+            {
+                @Html.DropDownListFor(x => x.ID_Cliente, listaClientes, "Selecione", new
+           {
+               id = "ddlCliente",
+               @class = "form-control",
+               @onchange = "buscarAtendimento(this.id)"
+           })
+            }
+            else
+            {
+                @Html.DropDownListFor(x => x.ID_Cliente, listaClientes, new
+           {
+               id = "ddlCliente",
+               @class = "form-control",
+               @readonly = true
+           })
+            }
+        </div>
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <label class="control-label" for="txtTelefone">Nº Telefone</label>
+            @Html.TextBoxFor(x => x.Telefone, new { id = "txtTelefone", @class = "form-control telefone" })
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Salvar</button>
+    <button type="reset" class="btn btn-danger">Limpar Dados</button>
+    @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-warning" })
+}
+
+<div id="lista_telefones">
+    @Html.Partial("_ListaCliente", telefones)
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        var msg = '@(!string.IsNullOrEmpty(mensagem)?mensagem:"")';
+
+        if (msg != '') {
+            alert(msg);
+        }
+
+    });
+</script>
+
+<script>
+
+    $("#ddlCliente").change(function () {
+
+        $.ajax({
+            url: "/Telefone/GetTelefonesByCliente?Id=" + $(this).val(),
+            type: "get",
+            success: function (response) {
+                $("#lista_telefones").html(response);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            }
+        });
+    });
+
+</script>

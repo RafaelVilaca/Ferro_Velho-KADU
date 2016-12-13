@@ -311,7 +311,7 @@
     <Content Include="Views\Telefone\Cadastro.cshtml" />
     <Content Include="Views\Caixa\_Lista.cshtml" />
     <Content Include="Views\Telefone\_ListaCliente.cshtml" />
-    <Content Include="Views\Caixa\Caixa.cshtml" />
+    <Content Include="Views\Caixa\Baixa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

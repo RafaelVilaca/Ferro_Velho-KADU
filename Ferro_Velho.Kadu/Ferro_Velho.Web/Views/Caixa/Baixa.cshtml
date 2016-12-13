@@ -1,0 +1,78 @@
+﻿@*model  PagedList.IPagedList<Ferro_Velho.Entidades.CaixaVo>
+@using PagedList.Mvc*@
+@model IEnumerable<Ferro_Velho.Entidades.CaixaVo>
+
+@{
+    ViewBag.Title = "Baixa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var mensagem = TempData["mensagem"] != null ? TempData["mensagem"].ToString() : "";
+}
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<p></p>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <p style="text-align:center"><a class="btn btn-group-justified btn-lg btn-primary" href="/Home/Index" style="padding-top:10px; padding-bottom:10px; font-size:x-large;">Página Inicial &raquo;</a></p>
+    </div>
+</div>
+<p></p>
+
+<h2>Baixa</h2>
+
+@using (Html.BeginForm("Baixa", "Caixa", FormMethod.Get, new { @class = "well" }))
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-condensed table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Nome Cliente</th>
+                    <th>Descrição Material</th>
+                    <th>Transação</th>
+                    <th>Peso</th>
+                    <th>Data Transação</th>
+                    <th>Valor Total</th>
+                    <th>Motivo Exclusão</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var atendimento in Model)
+                {
+                    <tr>
+                        <td>@atendimento.Cliente.Nome</td>
+                        <td>@atendimento.Material.Descricao</td>
+                        <td>@atendimento.Transacao</td>
+                        <td>@atendimento.Pesagem</td>
+                        <td>@atendimento.Data_Transacao</td>
+                        <td>@atendimento.Valor_Total</td>
+                        <td>@atendimento.Motivo_Exclusao</td>
+                        <td>
+                            <span class="glyphicon glyphicon-remove-sign"></span>
+                            @Html.ActionLink("Baixar", "Excluir", new { id = @atendimento.ID_Caixa }, new { onclick = "javascript: return confirm('Deseja realmente Baixar esta Ordem?')" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <br />
+
+        @*Página @Model.PageNumber de @Model.PageCount*@
+
+        @*@Html.PagedListPager(Model, Page => Url.Action("Caixa", new { pagina = Page }))*@
+
+    </div>
+}
+<script>
+    $(document).ready(function () {
+
+        var msg = '@(!string.IsNullOrEmpty(mensagem)?mensagem:"")';
+
+        if (msg != '') {
+            alert(msg);
+        }
+
+    });
+</script>

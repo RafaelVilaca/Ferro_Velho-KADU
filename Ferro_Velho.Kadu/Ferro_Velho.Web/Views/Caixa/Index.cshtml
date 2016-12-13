@@ -6,6 +6,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var mensagem = TempData["mensagem"] != null ? TempData["mensagem"].ToString() : "";
+
+    SelectList listaOperacao = new SelectList(new[]
+    {
+       new { Valor = "Devolução", Texto = "Devolução"}, new { Valor = "Venda", Texto = "Venda"},
+       new { Valor = "Entrada", Texto = "Entrada"}, new { Valor = "Saida", Texto = "Saida"}
+    }, "Valor", "Texto");
 }
 
 <p></p>
@@ -21,18 +27,22 @@
 @using (Html.BeginForm("Index", "Caixa", FormMethod.Get, new { @class = "well" }))
 {
     <div class="row">
-        <div class="form-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
             <label class="control-label" for="txtDataInicial">Data Inicial Transação</label>
 
             @Html.TextBox("dataInicial", "", new { id = "txtDataInicial", @class = "form-control data", @maxlength = "15" })
         </div>
-        <div class="form-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
             <label class="control-label" for="txtDataFinal">Data Final Transação</label>
             @Html.TextBox("dataFinal", "", new { id = "txtDataFinal", @class = "form-control data", @maxlength = "15" })
         </div>
         <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <label class="control-label" for="txtNomeCliente">Nome Cliente</label>
             @Html.TextBox("nome", "", new { id = "txtNomeCliente", @class = "form-control", @maxlength = "50" })
+        </div>
+        <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <label class="control-label" for="txtTransacao">Transação</label>
+            @Html.TextBox("transacao", "", new { id = "txtTransacao", @class = "form-control" })
         </div>
     </div>
 
@@ -53,6 +63,7 @@
                 <th>Data Transação</th>
                 <th>Valor Total</th>
                 <th>Motivo Exclusão</th>
+                <th>Baixado</th>
             </tr>
         </thead>
         <tbody>
@@ -66,6 +77,14 @@
                     <td>@atendimento.Data_Transacao</td>
                     <td>@atendimento.Valor_Total</td>
                     <td>@atendimento.Motivo_Exclusao</td>
+                    @if (@atendimento.Baixado)
+                    {
+                        <td>Sim</td>
+                    }
+                    else
+                    {
+                        <td>Não</td>
+                    }
                 </tr>
             }
         </tbody>

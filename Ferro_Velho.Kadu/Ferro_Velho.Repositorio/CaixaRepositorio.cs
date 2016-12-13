@@ -16,7 +16,7 @@ namespace Ferro_Velho.Repositorio
         public void Excluir(int id)
         {
             StringBuilder sql = new StringBuilder();
-            sql.Append("Update Caixa Set Transacao = 'Devolução' where ID = @ID");
+            sql.Append("UPDATE Caixa SET Baixado = 1 Where ID = @ID ");
             using (contexto = new Contexto())
             {
                 List<SqlParameter> param = new List<SqlParameter>()
@@ -75,13 +75,18 @@ namespace Ferro_Velho.Repositorio
             }
         }
 
-        public IEnumerable<CaixaVo> ListarTodos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente)
+        public IEnumerable<CaixaVo> ListarTodos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente, string transacao)
         {
             using (contexto = new Contexto())
             {
                 List<SqlParameter> param = new List<SqlParameter>();
                 var strQuery = "Select cx.*, cl.Nome, mat.Descricao from Caixa cx ";
                 strQuery += " INNER JOIN Clientes cl ON cl.ID_Cliente = cx.ID_Cliente ";
+                if (!string.IsNullOrEmpty(transacao))
+                {
+                    strQuery += " And cx.Transacao like '%' + @Transacao + '%' ";
+                    param.Add(new SqlParameter() { ParameterName = "@Transacao", SqlDbType = SqlDbType.VarChar, Value = transacao });
+                }
                 if (!string.IsNullOrEmpty(nomeCliente))
                 {
                     strQuery += " And cl.Nome like '%' + @NomeCliente + '%' ";
@@ -141,8 +146,8 @@ namespace Ferro_Velho.Repositorio
                         {
                             if (!string.IsNullOrEmpty(entidade.Motivo_Exclusao))
                             {
-                                sql.Append("INSERT INTO Caixa (ID_Material, Transacao, Pesagem, Valor_Total, Data_Transacao, ID_Cliente, Motivo_Exclusao) ");
-                                sql.Append(" VALUES (@ID_Material, @Transacao, @Pesagem, @Valor_Total, @Data_Transacao, @ID_Cliente, @Motivo); ");
+                                sql.Append("INSERT INTO Caixa (ID_Material, Transacao, Pesagem, Valor_Total, Data_Transacao, ID_Cliente, Motivo_Exclusao, Baixado) ");
+                                sql.Append(" VALUES (@ID_Material, @Transacao, @Pesagem, @Valor_Total, @Data_Transacao, @ID_Cliente, @Motivo, 0); ");
                                 sql.Append(" UPDATE Material Set Qtde_Peso = convert(decimal(15,2), Qtde_Peso) + convert(decimal(15,2), @Pesagem) WHERE ID_Material = @ID_Material ");
                                 mensagem = "Transacao efetuada com Sucesso!!!";
                             }
@@ -154,22 +159,22 @@ namespace Ferro_Velho.Repositorio
                         }
                         else if (entidade.Transacao == "Venda")
                         {
-                            sql.Append("INSERT INTO Caixa (ID_Material, Transacao, Pesagem, Valor_Total, Data_Transacao, ID_Cliente, Motivo_Exclusao) ");
-                            sql.Append(" VALUES (@ID_Material, @Transacao, @Pesagem, @Valor_Total, @Data_Transacao, @ID_Cliente, @Motivo); ");
+                            sql.Append("INSERT INTO Caixa (ID_Material, Transacao, Pesagem, Valor_Total, Data_Transacao, ID_Cliente, Motivo_Exclusao, Baixado) ");
+                            sql.Append(" VALUES (@ID_Material, @Transacao, @Pesagem, @Valor_Total, @Data_Transacao, @ID_Cliente, @Motivo, 0); ");
                             sql.Append(" UPDATE Material Set Qtde_Peso = convert(decimal(15,2), Qtde_Peso) - convert(decimal(15,2), @Pesagem) WHERE ID_Material = @ID_Material ");
                             mensagem = "Transacao efetuada com Sucesso!!!";
                         }
                         else if (entidade.Transacao == "Entrada")
                         {
-                            sql.Append("INSERT INTO Caixa (ID_Material, Transacao, Pesagem, Valor_Total, Data_Transacao, ID_Cliente, Motivo_Exclusao) ");
-                            sql.Append(" VALUES (@ID_Material, @Transacao, @Pesagem, @Valor_Total, @Data_Transacao, @ID_Cliente, @Motivo); ");
+                            sql.Append("INSERT INTO Caixa (ID_Material, Transacao, Pesagem, Valor_Total, Data_Transacao, ID_Cliente, Motivo_Exclusao, Baixado) ");
+                            sql.Append(" VALUES (@ID_Material, @Transacao, @Pesagem, @Valor_Total, @Data_Transacao, @ID_Cliente, @Motivo, 0); ");
                             sql.Append(" UPDATE Material Set Qtde_Peso = convert(decimal(15,2), Qtde_Peso) + convert(decimal(15,2), @Pesagem) WHERE ID_Material = @ID_Material ");
                             mensagem = "Transacao efetuada com Sucesso!!!";
                         }
                         else if (entidade.Transacao == "Saida")
                         {
-                            sql.Append("INSERT INTO Caixa (ID_Material, Transacao, Pesagem, Valor_Total, Data_Transacao, ID_Cliente, Motivo_Exclusao) ");
-                            sql.Append(" VALUES (@ID_Material, @Transacao, @Pesagem, @Valor_Total, @Data_Transacao, @ID_Cliente, @Motivo); ");
+                            sql.Append("INSERT INTO Caixa (ID_Material, Transacao, Pesagem, Valor_Total, Data_Transacao, ID_Cliente, Motivo_Exclusao, Baixado) ");
+                            sql.Append(" VALUES (@ID_Material, @Transacao, @Pesagem, @Valor_Total, @Data_Transacao, @ID_Cliente, @Motivo, 0); ");
                             sql.Append(" UPDATE Material Set Qtde_Peso = convert(decimal(15,2), Qtde_Peso) - convert(decimal(15,2), @Pesagem) WHERE ID_Material = @ID_Material ");
                             mensagem = "Transacao efetuada com Sucesso!!!";
                         }
@@ -238,35 +243,15 @@ namespace Ferro_Velho.Repositorio
             }
         }
 
-        public IEnumerable<CaixaVo> SemRemovido()
-        {
-            using (contexto = new Contexto())
-            {
-                var strQuery = "SELECT * FROM Material Where Ativo = 1 order by Descricao ";
-                var retorno = contexto.ExecutaComRetorno(strQuery, new List<SqlParameter>());
-                return ReaderObjeto(retorno);
-            }
-        }
-
-        public void Baixar(int id)
-        {
-            StringBuilder sql = new StringBuilder();
-            sql.Append("UPDATE Caixa SET Baixado = 1 Where ID = @ID ");
-            using (contexto = new Contexto())
-            {
-                List<SqlParameter> param = new List<SqlParameter>()
-                {
-                    new SqlParameter { ParameterName = "@ID", SqlDbType = SqlDbType.Int, Value = id }
-                };
-                contexto.ExecutaComando(sql.ToString(), param);
-            }
-        }
-
         public IEnumerable<CaixaVo> SemBaixados()
         {
             using (contexto = new Contexto())
             {
-                var strQuery = "SELECT * FROM Caixa Where Baixado = 0 order by ID_Cliente ";
+                List<SqlParameter> param = new List<SqlParameter>();
+                var strQuery = "Select cx.*, cl.Nome, mat.Descricao from Caixa cx ";
+                strQuery += " INNER JOIN Clientes cl ON cl.ID_Cliente = cx.ID_Cliente ";
+                strQuery += " INNER JOIN Material mat ON mat.ID_Material = cx.ID_Material ";
+                strQuery += " where cx.Baixado = 0 order by cx.Data_Transacao desc";
                 var retorno = contexto.ExecutaComRetorno(strQuery, new List<SqlParameter>());
                 return ReaderObjeto(retorno);
             }

@@ -15,11 +15,18 @@ namespace Ferro_Velho.Web.Controllers
         }
 
         // GET: Caixa
-        public ActionResult Index(string dataInicial, string dataFinal, string nome, int? pagina)
+        public ActionResult Index(string dataInicial, string dataFinal, string nome, int? pagina, string transacao)
         {
             var novaDataInicial = !String.IsNullOrEmpty(dataInicial) ? Convert.ToDateTime(dataInicial) : Convert.ToDateTime("1/1/1753");
             var novaDataFinal = !String.IsNullOrEmpty(dataFinal) ? Convert.ToDateTime(dataFinal) : DateTime.MaxValue;
-            var lista = caixaBo.ListarTodos(novaDataInicial, novaDataFinal, nome, pagina);
+            var lista = caixaBo.ListarTodos(novaDataInicial, novaDataFinal, nome, pagina, transacao);
+            return View(lista);
+        }
+
+        public ActionResult Baixa(int? pagina)
+        {
+            int paginas = pagina ?? 1;
+            var lista = caixaBo.SemBaixados(paginas);
             return View(lista);
         }
 
@@ -40,19 +47,9 @@ namespace Ferro_Velho.Web.Controllers
             }
             else
             {
-                ViewBag.Atendimentos = caixaBo.ListarTodos(null, null, null, null);
+                ViewBag.Atendimentos = caixaBo.ListarTodos(null, null, null, null, null);
                 return View();
             }
-        }
-
-        public ActionResult Baixar(int id)
-        {
-            CaixaVo caixa = new CaixaVo();
-            caixa.ID_Cliente = id;
-
-            caixaBo.Baixar(id);
-
-            return RedirectToAction("Caixa");
         }
 
         public ActionResult Excluir(int id)
@@ -62,7 +59,7 @@ namespace Ferro_Velho.Web.Controllers
 
             caixaBo.Excluir(id);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Baixa");
         }
 
         [HttpPost]

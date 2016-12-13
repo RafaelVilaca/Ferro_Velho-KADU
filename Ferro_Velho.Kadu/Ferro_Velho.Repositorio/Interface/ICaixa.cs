@@ -9,9 +9,8 @@ namespace Ferro_Velho.Repositorio.Interface
 {
     public interface ICaixa : IRepositorio<CaixaVo>
     {
-        IEnumerable<CaixaVo> ListarTodos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente);
+        IEnumerable<CaixaVo> ListarTodos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente, string transacao);
         IEnumerable<CaixaVo> ListarPorId(int idCliente);
         IEnumerable<CaixaVo> SemBaixados();
-        void Baixar(int id);
     }
 }

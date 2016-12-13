@@ -35,11 +35,11 @@ namespace Ferro_Velho.Business
             return repositorio.ListarTodos().ToPagedList(numeroPagina, tamanhoPagina);
         }
 
-        public IEnumerable<CaixaVo> ListarTodos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente, int? pagina)
+        public IEnumerable<CaixaVo> ListarTodos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente, int? pagina, string transacao)
         {
             int tamanhoPagina = 10;
             int numeroPagina = pagina ?? 1;
-            return repositorio.ListarTodos(dataInicial, dataFinal, nomeCliente).ToPagedList(numeroPagina, tamanhoPagina);
+            return repositorio.ListarTodos(dataInicial, dataFinal, nomeCliente, transacao).ToPagedList(numeroPagina, tamanhoPagina);
         }
 
         public IEnumerable<CaixaVo> SemRemovidos()
@@ -47,12 +47,7 @@ namespace Ferro_Velho.Business
             return repositorio.SemRemovidos();
         }
 
-        public void Baixar(int id)
-        {
-            repositorio.Baixar(id);
-        }
-
-        public IEnumerable<CaixaVo> SemBaixados()
+        public IEnumerable<CaixaVo> SemBaixados(int? pagina)
         {
             return repositorio.SemBaixados();
         }
